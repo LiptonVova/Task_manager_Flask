@@ -27,13 +27,13 @@
                 {% for task in tasks %}
                     <tr> 
                         <td>{{ task.content }}</td>
-                        <td>{{ task.date_created.date() }}</td>
+                        <td class="task-date">{{ task.date_created.strftime('%b %d, %Y %I:%M %p') }}</td>
                         <td class="actions">
-                            <a href="/delete/{{task.id}}" class="btn delete-btn">
+                            <a href="/delete/{{task.id}}" class="btn btn-sm delete-btn">
                                 <i class="fas fa-trash-alt"></i> Delete
                             </a>
-                            <a href="/update/{{task.id}}" class="btn update-btn">
-                                <i class="fas fa-edit"></i> Update
+                            <a href="/update/{{task.id}}" class="btn btn-sm update-btn">
+                                <i class="fas fa-edit"></i> Edit
                             </a>
                         </td>
                     </tr>
