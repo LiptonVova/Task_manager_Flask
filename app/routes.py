@@ -95,22 +95,23 @@ def delete_category():
         category = db.session.scalar(query)
         
         query = sa.select(Task).where(Task.category_id == category.id)
-        tasks = db.session.scalars(query) # задачи, у которых была категория, которую удаляем
+        tasks = db.session.scalars(query).all() # задачи, у которых была категория, которую удаляем
         
         # у всех задач, у которых была удаляемая категория, заменяем ее на дефолтную
-        if (tasks.all()):
+        if (len(tasks) > 0):
             flash(
                 "Внимание, вы удалили категорию, которая была использована в каких то задачах,\
                 она была заменена на 'Без категории' ")
             query = sa.select(Category).where(sa.and_(
                 Category.user_id == current_user.id, Category.type_category == "Без категории"
             ))
+            
             default_category = db.session.scalar(query)
             
             for task in tasks:
                 task.category = default_category
                 task.category_id = default_category.id
-                   
+                               
         try:
             db.session.delete(category)
             db.session.commit()
