@@ -1,7 +1,7 @@
 import sqlalchemy as sa  
 import sqlalchemy.orm as so
 from app import db, login
-from datetime import datetime, timezone
+from datetime import datetime, timezone, date
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from typing import Optional, List
@@ -24,6 +24,8 @@ class User(UserMixin, db.Model):
     
     tasks: so.Mapped[List["Task"]] = so.relationship(back_populates="user")
     
+    categories: so.Mapped[List["Category"]] = so.relationship(back_populates="user")
+    
     def __repr__(self):
         return f"<{self.id}: User {self.login}>"  
     
@@ -38,12 +40,16 @@ class Category(db.Model):
     __tablename__ = 'categories'
     
     id: so.Mapped[int] = so.mapped_column(sa.Integer, primary_key=True)
-    type_category: so.Mapped[str] = so.mapped_column(sa.String(50), nullable=False, unique=True)
+    type_category: so.Mapped[str] = so.mapped_column(sa.String(50), nullable=False)
+    
+    user_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey("users.id"), nullable=False)
+    
+    user: so.Mapped[User] = so.relationship(back_populates="categories")
     
     tasks: so.Mapped[List["Task"]] = so.relationship(back_populates="category")
-    
+        
     def __repr__(self):
-        return f"<Category {self.id}: {self.type_category}>"
+        return f"{self.type_category}"
 
 
 class Task(db.Model): 
@@ -56,8 +62,10 @@ class Task(db.Model):
        
     id: so.Mapped[int] = so.mapped_column(sa.Integer, primary_key=True)
     content: so.Mapped[str] = so.mapped_column(sa.String(200), nullable=False)
-    date_created: so.Mapped[datetime] = so.mapped_column(sa.DateTime(), default=lambda: datetime.now(timezone.utc))
-    deadline: so.Mapped[Optional[datetime]] = so.mapped_column(sa.DateTime())
+    
+    date_created: so.Mapped[datetime] = so.mapped_column(sa.DateTime(), default= datetime.now() )
+    
+    deadline: so.Mapped[Optional[date]] = so.mapped_column(sa.Date())
 
     user_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey("users.id"), nullable=False) # внешний ключ
     
@@ -69,4 +77,3 @@ class Task(db.Model):
     
     def __repr__(self):
         return f"<Task {self.id}>"
-

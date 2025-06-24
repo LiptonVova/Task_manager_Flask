@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block head %} {% endblock %}
+
+{% block body %} 
+
+{% if current_categories|length == 0 %} 
+Простите, но у вас нет категорий
+
+{% else%}
+
+{% from "_formhelpers.html" import render_field %}
+<form action="" method="POST">
+    {{ form.hidden_tag() }}
+
+    <dl>
+        {{ render_field(form.category) }}
+        {{ render_field(form.submit) }}
+    </dl>    
+</form>
+
+{% endif %}
+
+{% endblock %}

@@ -20,6 +20,8 @@
                 <tr>
                     <th>Task</th>
                     <th>Added</th>
+                    <th>Deadline</th>
+                    <th>Category</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -28,11 +30,17 @@
                     <tr> 
                         <td>{{ task.content }}</td>
                         <td class="task-date">{{ task.date_created.strftime('%b %d, %Y %I:%M %p') }}</td>
+                        {% if not task.deadline %}
+                            <td> Без дедлайна </td>
+                        {% else %} 
+                            <td> {{ task.deadline }} </td>
+                        {% endif %}
+                        <td> {{task.category }} </td>
                         <td class="actions">
                             <a href="/delete/{{task.id}}" class="btn btn-sm delete-btn">
                                 <i class="fas fa-trash-alt"></i> Delete
                             </a>
-                            <a href="/update/{{task.id}}" class="btn btn-sm update-btn">
+                            <a href={{url_for("edit_task", id=task.id)}} class="btn btn-sm update-btn"> 
                                 <i class="fas fa-edit"></i> Edit
                             </a>
                         </td>
@@ -43,11 +51,9 @@
     </div>
     {% endif %}
 
-    <form action="/" method="POST" class="task-form">
-        <input type="text" name="content" id="content" class="task-input" placeholder="Enter new task..." required>
-        <button type="submit" class="submit-btn">
-            <i class="fas fa-plus-circle"></i> Add Task
-        </button>
-    </form>
+    <a type="submit" class="submit-btn" href="{{url_for('new_task')}}">
+        <i class="fas fa-plus-circle"></i> Add Task
+    </a>
+
 </div>
 {% endblock %}
