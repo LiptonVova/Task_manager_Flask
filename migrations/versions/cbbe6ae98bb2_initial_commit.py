@@ -1,8 +1,8 @@
-"""empty message
+"""initial commit
 
-Revision ID: 0e56338d82c5
+Revision ID: cbbe6ae98bb2
 Revises: 
-Create Date: 2025-06-22 16:41:38.162152
+Create Date: 2025-06-24 11:19:09.500762
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '0e56338d82c5'
+revision = 'cbbe6ae98bb2'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -22,16 +22,17 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('login', sa.String(length=50), nullable=False),
     sa.Column('hashed_password', sa.String(length=256), nullable=True),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('login')
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_users')),
+    sa.UniqueConstraint('login', name=op.f('uq_users_login'))
     )
     op.create_table('tasks',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('content', sa.String(length=200), nullable=False),
     sa.Column('date_created', sa.DateTime(), nullable=False),
+    sa.Column('deadline', sa.DateTime(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], name=op.f('fk_tasks_user_id_users')),
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_tasks'))
     )
     # ### end Alembic commands ###
 

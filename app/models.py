@@ -34,6 +34,18 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.hashed_password, password)
 
 
+class Category(db.Model):
+    __tablename__ = 'categories'
+    
+    id: so.Mapped[int] = so.mapped_column(sa.Integer, primary_key=True)
+    type_category: so.Mapped[str] = so.mapped_column(sa.String(50), nullable=False, unique=True)
+    
+    tasks: so.Mapped[List["Task"]] = so.relationship(back_populates="category")
+    
+    def __repr__(self):
+        return f"<Category {self.id}: {self.type_category}>"
+
+
 class Task(db.Model): 
     """Модель задачи
     Используется отношение один ко многим: 
@@ -45,10 +57,15 @@ class Task(db.Model):
     id: so.Mapped[int] = so.mapped_column(sa.Integer, primary_key=True)
     content: so.Mapped[str] = so.mapped_column(sa.String(200), nullable=False)
     date_created: so.Mapped[datetime] = so.mapped_column(sa.DateTime(), default=lambda: datetime.now(timezone.utc))
-    
+    deadline: so.Mapped[Optional[datetime]] = so.mapped_column(sa.DateTime())
+
     user_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey("users.id"), nullable=False) # внешний ключ
     
+    category_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey("categories.id"), nullable=False) # внешний ключ
+        
     user: so.Mapped[User] = so.relationship(back_populates="tasks")    
+    
+    category: so.Mapped[Category] = so.relationship(back_populates="tasks")
     
     def __repr__(self):
         return f"<Task {self.id}>"

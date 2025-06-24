@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, BooleanField, SubmitField, PasswordField
+from wtforms import StringField, BooleanField, SubmitField, PasswordField, TextAreaField, DateTimeField, SelectField
 from wtforms.validators import DataRequired, EqualTo, ValidationError
 from app import db
 import sqlalchemy as sa 
@@ -24,3 +24,10 @@ class RegistrationForm(FlaskForm):
         user = db.session.scalar(query)
         if user is not None:
             raise ValidationError
+        
+        
+class AddNewTaskForm(FlaskForm):
+    content = TextAreaField('Description', validators=[DataRequired()])
+    category = SelectField('Category')
+    deadline = DateTimeField('Deadline')
+    submit = SubmitField('Add task')
