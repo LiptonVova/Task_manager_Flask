@@ -186,8 +186,8 @@ def login():
         user = db.session.scalar(sa.select(User).where(User.login == form.login.data))
         if user is None or not user.check_password(form.password.data):
             flash("Invalid login or password")
-            redirect(url_for('login'))
-            
+            return redirect(url_for('login'))
+                        
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get('next')
         if not next_page or urlsplit(next_page).netloc != '':
@@ -210,19 +210,30 @@ def register():
         user = User(login=form.login.data)
         user.set_password(password=form.password.data)
         
-        default_category = Category(type_category="Без категории", user=current_user)
-        # за каждым пользователем закреплена как минимум одна категория ("Без категории")
-        
         try:
-            db.session.add(user)
-            db.session.add(default_category)
-            db.session.commit()
-        
-            flash("Congratulations!!! You are new user in our site!!!")
-            return redirect(url_for('login'))        
+            db.session.add(user)        
         
         except:
             return "Error 404..."
+        
+        
+        # нужно найти в базе данных найти нового пользователя, чтобы подтянулся user_id
+        query = sa.select(User).where(User.login == user.login)
+        cur_user = db.session.scalar(query)
+        
+        default_category = Category(type_category="Без категории", user=cur_user)
+        # за каждым пользователем закреплена как минимум одна категория ("Без категории")
+        
+        try:
+            db.session.add(default_category)
+            db.session.commit()
+
+            flash("Congratulations!!! You are new user in our site!!!")
+            return redirect(url_for('login'))
+
+        except:
+            return "Error 404..."
+        
         
 
     return render_template('register.html', form=form)

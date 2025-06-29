@@ -1,0 +1,56 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "Launch FLask",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "flask",
+            "env": {
+                "FLASK_APP": "task_manager.py",
+                "FLASK_DEBUG": "1",
+            },
+            "args": [
+                "run",
+                "--no-debugger",
+                "--no-reload"
+            ],
+            "jinja": true,
+            "justMyCode": true
+
+        },
+
+        {
+            "name": "Attach Flask",
+            "type": "debugpy",
+            "request": "attach",
+        
+            "connect": {
+                "host": "localhost",
+                "port": 5678
+            },
+        },
+
+        {
+            "name": "Docker Attach Flask",
+            "type": "debugpy",
+            "request": "attach",
+        
+            "connect": {
+                "host": "localhost",
+                "port": 5678
+            },
+
+            "pathMappings": [
+                {
+                    "localRoot": "${workspaceFolder}",
+                    "remoteRoot": "/app"
+                }
+            ],
+        },
+    ]
+}

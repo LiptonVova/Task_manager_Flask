@@ -1,0 +1,12 @@
+services:
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+      - "5678:5678"
+    container_name: task-manager-container
+    environment:
+      - BUILD_TYPE=${BUILD_TYPE}
+    restart: on-failure
