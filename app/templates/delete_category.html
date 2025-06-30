@@ -1,24 +1,36 @@
 {% extends "base.html" %}
 
-{% block head %} {% endblock %}
+{% block head %}
+<title>Delete Category | Task Manager</title>
+{% endblock %}
 
 {% block body %} 
+<div class="content">
+    <h1 class="title">Delete Category</h1>
 
-{% if current_categories|length == 0 %} 
-Простите, но у вас нет категорий
+    {% if current_categories|length == 0 %}
+        <div class="empty-categories">
+            <i class="fas fa-folder-open"></i>
+            <p>You don't have any categories to delete.</p>
+            <a href="{{ url_for('add_category') }}" class="btn update-btn">
+                <i class="fas fa-plus"></i> Add Category
+            </a>
+        </div>
+    {% else %}
+        <form action="" method="POST">
+            {{ form.hidden_tag() }}
 
-{% else%}
+            <dl>
+                <div class="form-group">
+                    {{ form.category.label(class="form-label") }}
+                    {{ form.category(class="form-control") }}
+                </div>
 
-{% from "_formhelpers.html" import render_field %}
-<form action="" method="POST">
-    {{ form.hidden_tag() }}
-
-    <dl>
-        {{ render_field(form.category) }}
-        {{ render_field(form.submit) }}
-    </dl>    
-</form>
-
-{% endif %}
-
+                <div class="form-submit">
+                    {{ form.submit(class="submit-btn btn-rounded delete-btn") }}
+                </div>
+            </dl>
+        </form>
+    {% endif %}
+</div>
 {% endblock %}

@@ -1,20 +1,41 @@
 {% extends "base.html" %}
 
-{% block head %} {% endblock %}
+{% block head %}
+<title>Add Task | Task Manager</title>
+{% endblock %}
 
 {% block body %} 
+<div class="content">
+    <h1 class="title">Add New Task</h1>
+    
+    <form action="" method="POST">
+        {{ form.hidden_tag() }}
 
+        <dl>
+            <div class="form-group">
+                {{ form.content.label(class="form-label") }}
+                {{ form.content(class="form-control", placeholder="What needs to be done?") }}
+                {% if form.content.errors %}
+                    <small style="color: var(--danger-color); margin-top: 0.5rem; display: block;">
+                        <i class="fas fa-exclamation-circle"></i> {{ form.content.errors[0] }}
+                    </small>
+                {% endif %}
+            </div>
 
-{% from "_formhelpers.html" import render_field %}
-<form action="" method="POST">
-    {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.category.label(class="form-label") }}
+                {{ form.category(class="form-control") }}
+            </div>
 
-    <dl>
-        {{ render_field(form.content) }}
-        {{ render_field(form.category) }}
-        {{ render_field(form.deadline) }}
-        {{ render_field(form.submit) }}
-    </dl>    
-</form>
+            <div class="form-group">
+                {{ form.deadline.label(class="form-label") }}
+                {{ form.deadline(class="form-control") }}
+            </div>
 
+            <div class="form-submit">
+                {{ form.submit(class="submit-btn btn-rounded") }}
+            </div>
+        </dl>    
+    </form>
+</div>
 {% endblock %}

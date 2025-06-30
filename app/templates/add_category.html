@@ -1,20 +1,31 @@
 {% extends 'base.html' %}
 
-{% block head %} {% endblock %}
+{% block head %}
+<title>Add Category | Task Manager</title>
+{% endblock %}
 
 {% block body %}
+<div class="content">
+    <h1 class="title">Add New Category</h1>
 
-{% from "_formhelpers.html" import render_field %}
+    <form action="" method="POST">
+        {{ form.hidden_tag() }}
 
-<form action="" method="POST">
-    {{ form.hidden_tag() }}
+        <dl>
+            <div class="form-group">
+                {{ form.category.label(class="form-label") }}
+                {{ form.category(class="form-control", placeholder="Enter category name") }}
+                {% if form.category.errors %}
+                    <small style="color: var(--danger-color); margin-top: 0.5rem; display: block;">
+                        <i class="fas fa-exclamation-circle"></i> {{ form.category.errors[0] }}
+                    </small>
+                {% endif %}
+            </div>
 
-    <dl>
-        {{ render_field(form.category )}}
-        {{ render_field(form.submit) }}
-    </dl>
-
-    
-</form>
-
+            <div class="form-submit">
+                {{ form.submit(class="submit-btn btn-rounded") }}
+            </div>
+        </dl>
+    </form>
+</div>
 {% endblock %}
