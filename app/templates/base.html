@@ -18,30 +18,30 @@
                 <span>Task Manager</span>
             </div>
             <div class="nav-links">
-                <a href="{{ url_for('index') }}" class="nav-link {% if request.path == url_for('index') %}active{% endif %}">
+                <a href="{{ url_for('home_bp.index') }}" class="nav-link {% if request.path == url_for('home_bp.index') %}active{% endif %}">
                     <i class="fas fa-home"></i> Home
                 </a>
                 {% if current_user.is_anonymous %}
-                <a href="{{ url_for('login') }}" class="nav-link {% if request.path == url_for('login') %}active{% endif %}">
+                <a href="{{ url_for('auth_bp.login') }}" class="nav-link {% if request.path == url_for('auth_bp.login') %}active{% endif %}">
                     <i class="fas fa-sign-in-alt"></i> Login
                 </a>
-                <a href="{{ url_for('register') }}" class="nav-link {% if request.path == url_for('register') %}active{% endif %}">
+                <a href="{{ url_for('auth_bp.register') }}" class="nav-link {% if request.path == url_for('auth_bp.register') %}active{% endif %}">
                     <i class="fas fa-user-plus"></i> Register
                 </a>
                 {% else %}
-                <a href="{{url_for('new_task')}}" class="nav-link {% if request.path == url_for('new_task') %}active{% endif %}"> 
+                <a href="{{url_for('main_bp.new_task')}}" class="nav-link {% if request.path == url_for('main_bp.new_task') %}active{% endif %}"> 
                     <i class="fas fa-plus-circle"></i> Add Task
                 </a>
                 
-                <a href="{{url_for('add_category')}}" class="nav-link {% if request.path == url_for('add_category') %}active{% endif %}"> 
+                <a href="{{url_for('main_bp.add_category')}}" class="nav-link {% if request.path == url_for('main_bp.add_category') %}active{% endif %}"> 
                     <i class="fas fa-folder-plus"></i> Add Category
                 </a> 
 
-                <a href="{{url_for('delete_category')}}" class="nav-link {% if request.path == url_for('delete_category') %}active{% endif %}"> 
+                <a href="{{url_for('main_bp.delete_category')}}" class="nav-link {% if request.path == url_for('main_bp.delete_category') %}active{% endif %}"> 
                     <i class="fas fa-folder-minus"></i> Delete Category
                 </a> 
 
-                <a href="{{ url_for('logout') }}" class="nav-link">
+                <a href="{{ url_for('auth_bp.logout') }}" class="nav-link">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
                 {% endif %}

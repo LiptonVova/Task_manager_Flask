@@ -1,8 +1,11 @@
-from app import app, db
+from app import create_app
+
 from app.models import User, Task
+
 import sqlalchemy as sa
 import sqlalchemy.orm as so
 
+app = create_app()
 
 @app.shell_context_processor
 def make_shell_context():
